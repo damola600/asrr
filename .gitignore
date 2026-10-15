@@ -1,0 +1,33 @@
+# Python
+asrr_venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+credentials.json
+client_secret*.json
+token.json
+*.pem
+
+# Databases
+db.sqlite3
+*.sqlite3
+
+# Django
+staticfiles/
+media/
+
+# Next.js
+node_modules/
+.next/
+out/
+.vercel/
+
+# System files
+.DS_Store
+Thumbs.db
