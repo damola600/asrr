@@ -69,13 +69,13 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "https://asrr-seven.vercel.app/",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
+    "https://asrr-seven.vercel.app/",
 ]
 
 SESSION_COOKIE_SECURE = True
