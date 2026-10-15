@@ -168,6 +168,10 @@ MAILERS = {
     },
 }
 
+SCOPES = [
+    "https://www.googleapis.com/auth/calendar.events"
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
