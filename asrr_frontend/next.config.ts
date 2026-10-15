@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       {
         source: "/backend/:path*",
         destination:
-          "http://localhost:8000/:path*",
+          "https://asrr.onrender.com/:path*",
       },
     ];
   },
