@@ -4,11 +4,7 @@ import { apiFetch } from '@/lib/api';
 
 export async function getCSRF() {
     try{
-        const csrfResponse = await apiFetch(`/member/csrf/`,
-            {
-                credentials: "include",
-            }
-        );
+        const csrfResponse = await apiFetch(`/member/csrf/`,);
 
         if (!csrfResponse.ok) {
         throw new Error("Unable to initialize CSRF protection");
@@ -21,7 +17,7 @@ export async function getCSRF() {
         if(typeof csrfToken !== 'string' || !csrfToken){
             throw new Error('CSRF token missing from response');
         }
-        
+
         return csrfToken;
     }
     catch (error){
