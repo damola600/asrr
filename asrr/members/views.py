@@ -15,6 +15,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from .tasks import send_welcome_email
 from user_events.tasks import sync_user_calendar_task
 from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_protect
 
 @ensure_csrf_cookie
 @api_view(["GET"])
@@ -33,6 +34,7 @@ now = datetime.now()
 curr_year = now.year
 curr_mnth = now.month
 
+@csrf_protect
 @api_view(['POST'])
 @authentication_classes([])
 @permission_classes([AllowAny])
@@ -62,7 +64,7 @@ def register_user(request):
         status=status.HTTP_400_BAD_REQUEST
     )
 
-
+@csrf_protect
 @api_view(['POST'])
 @authentication_classes([])
 @permission_classes([AllowAny])
@@ -149,7 +151,7 @@ def profile(request):
                     'message': 'User profile successfully updated',
                     'profile': serializer.data,
                     'calendar_sync_queued': bool(getattr(serializer, 'member_update', False)),
-                }, status=status.HTTP_201_CREATED
+                }, status=status.HTTP_200_OK
             )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -165,29 +167,62 @@ def sunnah_pref(request):
         serializer = SunnahPreferenceSerializer(sunnah)
         
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-    
-    if request.method == 'PATCH':
-        serializer = SunnahPreferenceSerializer(sunnah, data=request.data, partial=True)
-        
-        serializer.is_valid(raise_exception=True)
-        
-        with transaction.atomic():
-            serializer.save()
-            
-            if getattr(serializer, 'sunnah_update', False):
-                user_id = request.user.id
-                
-                transaction.on_commit(lambda user_id=user_id: sync_user_calendar_task.delay(user_id))
-                refresh_user_calendar(request.user)
-            
-            return Response(
-                {
-                    'message': 'Sunnah preferences updated successfully',
-                    'preferences': serializer.data,
-                    'calendar_sync_queued': bool(getattr(serializer, 'sunnah_update', False))
-                },
-                status=status.HTTP_200_OK
+    serializer = SunnahPreferenceSerializer(
+        sunnah,
+        data=request.data,
+        partial=True
+    )
+
+    serializer.is_valid(raise_exception=True)
+
+    with transaction.atomic():
+        serializer.save()
+
+        needs_sync = getattr(
+            serializer,
+            "sunnah_update",
+            False
+        )
+
+        if needs_sync:
+            user_id = request.user.id
+
+            transaction.on_commit(
+                lambda user_id=user_id:
+                    sync_user_calendar_task.delay(user_id)
             )
+
+    return Response(
+        {
+            "message": "Sunnah preferences updated successfully",
+            "preferences": serializer.data,
+            "calendar_sync_queued": needs_sync,
+        },
+        status=status.HTTP_200_OK
+    )
+    
+    # if request.method == 'PATCH':
+    #     serializer = SunnahPreferenceSerializer(sunnah, data=request.data, partial=True)
         
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+    #     serializer.is_valid(raise_exception=True)
+        
+    #     with transaction.atomic():
+    #         serializer.save()
+            
+    #         if getattr(serializer, 'sunnah_update', False):
+    #             user_id = request.user.id
+                
+    #             transaction.on_commit(lambda user_id=user_id: sync_user_calendar_task.delay(user_id))
+    #             refresh_user_calendar(request.user)
+            
+    #         return Response(
+    #             {
+    #                 'message': 'Sunnah preferences updated successfully',
+    #                 'preferences': serializer.data,
+    #                 'calendar_sync_queued': bool(getattr(serializer, 'sunnah_update', False))
+    #             },
+    #             status=status.HTTP_200_OK
+    #         )
+        
+    #     return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
                 

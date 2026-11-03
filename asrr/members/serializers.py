@@ -73,6 +73,7 @@ class MemberSerializer(serializers.ModelSerializer):
             "city",
             "country",
             "madhab",
+            "prayer_enabled",
         }
         
         
