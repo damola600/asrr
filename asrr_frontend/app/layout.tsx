@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "ASRR Islamic Calendar",
   description: "Your personal Islamic prayer and Sunnah calendar",
+  verification:{
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  }
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

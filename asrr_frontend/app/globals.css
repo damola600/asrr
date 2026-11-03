@@ -774,3 +774,32 @@ select {
   }
 
 }
+
+
+/* --------------------------------
+   FOOTER
+-------------------------------- */
+
+.site-footer {
+  display: flex;
+  justify-content: flex-end; /* Move links to far right */
+  align-items: center;
+  padding: 20px 40px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.site-footer nav {
+  display: flex;
+  align-items: center;
+  gap: 32px; /* Space between Privacy and Terms */
+}
+
+.site-footer a {
+  color: #23724c;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
