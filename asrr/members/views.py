@@ -14,6 +14,7 @@ from user_events.services import refresh_user_calendar
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .tasks import send_welcome_email
 from user_events.tasks import sync_user_calendar_task
+from django.middleware.csrf import get_token
 
 @ensure_csrf_cookie
 @api_view(["GET"])
@@ -21,7 +22,8 @@ from user_events.tasks import sync_user_calendar_task
 def csrf_cookie(request):
     return Response(
         {
-            "message": "CSRF cookie set."
+            "message": "CSRF cookie set.",
+            'csrfToken': get_token(request),
         },
         status=status.HTTP_200_OK
     )

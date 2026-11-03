@@ -14,7 +14,7 @@ export async function getCSRF() {
         throw new Error("Unable to initialize CSRF protection");
         }
 
-        return csrfResponse.json();
+        return csrfResponse.json().csrfToken;
     }
     catch (error){
         console.error(`Unable to get CSRF token: ${error}`);
