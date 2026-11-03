@@ -5,8 +5,9 @@ import { apiFetch } from '@/lib/api';
 
 export async function verifySession(){
     try{
-        await apiFetch('/member/profile', {
+        await apiFetch('/member/profile/', {
             method: 'GET',
+            cache: 'no-store',
         });
         return true;
     }catch (error){
