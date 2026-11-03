@@ -69,13 +69,13 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    os.getenv('FRONTEND_URI', "https://asrr-seven.vercel.app/"),
+    os.getenv('FRONTEND_URI', "https://asrr-seven.vercel.app").rstrip("/"),
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    os.getenv('FRONTEND_URI', "https://asrr-seven.vercel.app/"),
+    os.getenv('FRONTEND_URI', "https://asrr-seven.vercel.app").rstrip("/"),
     
 ]
 

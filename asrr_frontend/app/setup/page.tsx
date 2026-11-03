@@ -1277,7 +1277,7 @@ export default function SetupPage() {
 
 
                 <span className="required-badge">
-                  Required
+                  (Required)
                 </span>
 
               </div>
