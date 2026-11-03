@@ -22,6 +22,8 @@ import {
 import "./page.module.css";
 
 
+
+
 type UserProfile = {
   email: string;
 
@@ -454,7 +456,7 @@ export default function Dashboard() {
       // of running both PATCH requests at
       // the same time. This prevents two
       // calendar refreshes from competing.
-
+      
       const profileResult =
         await apiFetch(
           "/member/profile/",

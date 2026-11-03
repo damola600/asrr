@@ -16,6 +16,7 @@ import {
 import { countries } from "@/public/data/countries";
 
 
+
 type SunnahPreferences = {
   tahajjud: boolean;
   duha: boolean;
@@ -503,6 +504,8 @@ export default function SetupPage() {
        * Dashboard -> Edit Preferences.
        */
 
+    
+      
       await apiFetch(
         "/member/profile/",
         {
@@ -529,7 +532,6 @@ export default function SetupPage() {
         "/member/sunnah/",
         {
           method: "PATCH",
-
           body: JSON.stringify({
 
             sunnah_enabled:

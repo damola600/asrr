@@ -1,156 +1,84 @@
-export const API_BASE =
+
+export const API_BASE = (
   process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "https://asrr.onrender.com";
+  "https://asrr.onrender.com"
+).replace(/\/+$/, "");
 
+type CsrfResponse = {
+  csrfToken?: string;
+  csrf_token?: string;
+};
 
-function getCookie(
-  name: string
-): string | null {
+async function getCsrfToken(): Promise<string> {
+  const response = await fetch(`${API_BASE}/member/csrf/`, {
+    method: "GET",
+    credentials: "include",
+    cache: "no-store",
+  });
 
-  if (typeof document === "undefined") {
-    return null;
+  if (!response.ok) {
+    throw new Error("Unable to initialize CSRF protection");
   }
 
-  const cookies =
-    document.cookie.split(";");
+  const data: CsrfResponse = await response.json();
 
-  for (const cookie of cookies) {
-    const trimmed =
-      cookie.trim();
+  const token = data.csrfToken ?? data.csrf_token;
 
-    if (
-      trimmed.startsWith(
-        `${name}=`
-      )
-    ) {
-      return decodeURIComponent(
-        trimmed.substring(
-          name.length + 1
-        )
-      );
-    }
+  if (typeof token !== "string" || !token) {
+    throw new Error("CSRF token missing from backend response");
   }
 
-  return null;
+  return token;
 }
-
-
-async function ensureCsrfCookie() {
-  let csrfToken =
-    getCookie("csrftoken");
-
-  if (csrfToken) {
-    return csrfToken;
-  }
-
-
-  await fetch(
-    `${API_BASE}/member/csrf/`,
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
-
-
-  csrfToken =
-    getCookie("csrftoken");
-
-  return csrfToken;
-}
-
 
 export async function apiFetch(
   endpoint: string,
   options: RequestInit = {}
 ) {
+  const method = (options.method ?? "GET").toUpperCase();
 
-  const method =
-    (
-      options.method ??
-      "GET"
-    ).toUpperCase();
+  const unsafeMethod = [
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+  ].includes(method);
 
+  const headers = new Headers(options.headers);
 
-  const unsafeMethod =
-    [
-      "POST",
-      "PUT",
-      "PATCH",
-      "DELETE",
-    ].includes(method);
-
-
-  const headers =
-    new Headers(
-      options.headers
-    );
-
-
-  if (
-    !headers.has(
-      "Content-Type"
-    ) &&
-    options.body
-  ) {
-    headers.set(
-      "Content-Type",
-      "application/json"
-    );
+  if (!headers.has("Content-Type") && options.body) {
+    headers.set("Content-Type", "application/json");
   }
-
 
   if (unsafeMethod) {
+    const csrfToken = await getCsrfToken();
 
-    const csrfToken =
-      await ensureCsrfCookie();
-
-
-    if (csrfToken) {
-      headers.set(
-        "X-CSRFToken",
-        csrfToken
-      );
-    }
+    headers.set("X-CSRFToken", csrfToken);
   }
 
-
-  const response =
-    await fetch(
-      `${API_BASE}${endpoint}`,
-      {
-        ...options,
-
-        credentials:
-          "include",
-
-        headers,
-      }
-    );
-
+  const response = await fetch(`${API_BASE}${endpoint}`, {
+    ...options,
+    method,
+    credentials: "include",
+    headers,
+  });
 
   let data = null;
 
-
   try {
-    data =
-      await response.json();
-
+    data = await response.json();
   } catch {
     data = null;
   }
 
-
   if (!response.ok) {
-
     throw new Error(
       data?.error ||
       data?.detail ||
       data?.message ||
-      "Something went wrong."
+      `Request failed (${response.status})`
     );
   }
-
 
   return data;
 }
