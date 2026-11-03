@@ -94,7 +94,7 @@ export default function TermsPage() {
         <h2>13. Contact</h2>
         <p>
           Questions about these Terms may be sent to:
-          <a href="asrr@gmail.com">Email</a>
+          <a href="asrr4698@gmail.com">Email</a>
         </p>
         <p>
           Service operator: ASRR Organization
