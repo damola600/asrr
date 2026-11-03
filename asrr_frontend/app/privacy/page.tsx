@@ -106,7 +106,7 @@ export default function PrivacyPage() {
         <h2>9. Contact Us</h2>
         <p>
           For privacy inquiries, data requests, or concerns,
-          contact: [YOUR SUPPORT EMAIL]
+          contact: <a href="asrr4698@gmail.com">Email</a>
         </p>
       </section>
 
