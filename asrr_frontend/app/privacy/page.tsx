@@ -69,12 +69,11 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <main style={{
+    <main className='legal-page' style={{
       maxWidth: 820,
       margin: "0 auto",
       padding: "64px 24px",
       lineHeight: 1.8,
-      color: "var(--foreground, #202a25)"
     }}>
       <Link href="/" style={{ color: "#23724c" }}>
         ← Back to ASRR

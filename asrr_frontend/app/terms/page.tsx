@@ -60,7 +60,7 @@ const sections = [
 
 export default function TermsPage() {
   return (
-    <main style={{
+    <main className="legal-page" style={{
       maxWidth: 820,
       margin: "0 auto",
       padding: "64px 24px",

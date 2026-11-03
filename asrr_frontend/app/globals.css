@@ -803,3 +803,27 @@ select {
 .site-footer a:hover {
   text-decoration: underline;
 }
+
+
+/* Privacy Policy and Terms of Service */
+
+.legal-page {
+  color: #ffffff;
+}
+
+.legal-page h1,
+.legal-page h2,
+.legal-page h3,
+.legal-page p,
+.legal-page li {
+  color: #ffffff;
+}
+
+.legal-page a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.legal-page a:hover {
+  color: #dcc5a3;
+}
