@@ -33,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <footer className="site-footer">
           <div>
             <p>© {new Date().getFullYear()}. All rights reserved.</p>
-          </div>
+          </div> <br />
           <nav aria-label="Legal">
             <Link href="/privacy">Privacy Policy</Link>
             <Link href="/terms">Terms of Service</Link>
