@@ -24,7 +24,7 @@ class Member(models.Model):
     madhab = models.CharField(max_length=20, choices=MADHAB_CHOICES, default="shafi", blank=True)
     
     setup_complete = models.BooleanField(default=False)
-    prayer_enabled = models.BooleanField(default=False)
+    prayer_enabled = models.BooleanField(default=True)
     # sunnah_enabled = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -224,5 +224,38 @@
   "duration_minutes": null,
   "description": "Reminder for evening adhkar after Asr.",
   "moon_sighting_sensitive": false
+},
+{
+  "name": "Tahajjud Prayer",
+  "slug": "tahajjud",
+  "event_type": "SUNNAH",
+  "date_type": "DAILY",
+  "hijri_month": null,
+  "hijri_day": null,
+  "hijri_end_day": null,
+  "weekday": null,
+  "time_type": "PRAYER_RELATIVE",
+  "reference_prayer": "FAJR",
+  "offset_minutes": -60,
+  "duration_minutes": 30,
+  "description": "Reminder for optional Tahajjud prayer before Fajr.",
+  "moon_sighting_sensitive": false
+},
+{
+  "name": "Duha Prayer",
+  "slug": "duha",
+  "event_type": "SUNNAH",
+  "date_type": "DAILY",
+  "hijri_month": null,
+  "hijri_day": null,
+  "hijri_end_day": null,
+  "weekday": null,
+  "time_type": "PRAYER_RELATIVE",
+  "reference_prayer": "SUNRISE",
+  "offset_minutes": 20,
+  "duration_minutes": 15,
+  "description": "Reminder for optional Duha prayer after sunrise.",
+  "moon_sighting_sensitive": false
 }
+
 ]

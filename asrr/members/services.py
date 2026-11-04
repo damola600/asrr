@@ -300,6 +300,40 @@ def build_user_schedule(user):
         raise ValueError(
             "A valid user is required."
         )
+        
+    print("\n=== EVENT OCCURRENCE DEBUG ===")
+
+    print(
+        "Total EventOccurrences:",
+        EventOccurrence.objects.count()
+    )
+
+    print(
+        "All-day occurrences:",
+        EventOccurrence.objects.filter(
+            all_day=True
+        ).count()
+    )
+
+    print(
+        "Prayer-relative occurrences:",
+        EventOccurrence.objects.filter(
+            all_day=False,
+            event__time_type="PRAYER_RELATIVE"
+        ).count()
+    )
+
+    print(
+        "Sample event slugs:",
+        list(
+            EventOccurrence.objects.values_list(
+                "event__slug",
+                flat=True
+            ).distinct()[:20]
+        )
+    )
+
+    print("==============================\n")
 
     create_all_day_user_events(user)
     
