@@ -31,14 +31,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
 
         <footer className="site-footer">
-          <div>
+          <div className='footer-brand'>
+            <span>☾ ASRR</span>
+          </div>
+            <nav className='footer-links' aria-label="Legal">
+              <Link href="/privacy">Privacy Policy</Link>
+              <Link href="/terms">Terms of Service</Link>
+            </nav>
+          
+          <div className='footer-copyright'>
             <p>© {new Date().getFullYear()}. All rights reserved.</p>
-          </div> <br />
-          <nav aria-label="Legal">
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/terms">Terms of Service</Link>
-          </nav>
+          </div>
         </footer>
+        
       </body>
       
     </html>

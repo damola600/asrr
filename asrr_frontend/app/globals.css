@@ -780,29 +780,75 @@ select {
    FOOTER
 -------------------------------- */
 
+
 .site-footer {
-  display: flex;
-  justify-content: flex-end; /* Move links to far right */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 20px 40px;
+  padding: 24px 40px;
   border-top: 1px solid #e5e7eb;
   font-size: 14px;
+  width: 100%;
+  gap: 24px;
 }
 
-.site-footer nav {
+/* Far left */
+.footer-brand {
+  justify-self: start;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Center */
+.footer-links {
   display: flex;
   align-items: center;
-  gap: 32px; /* Space between Privacy and Terms */
+  justify-content: center;
+  gap: 32px;
 }
 
-.site-footer a {
+.footer-links a {
   color: #23724c;
   text-decoration: none;
 }
 
-.site-footer a:hover {
+.footer-links a:hover {
   text-decoration: underline;
 }
+
+/* Far right */
+.footer-copyright {
+  justify-self: end;
+  text-align: right;
+}
+
+.footer-copyright p {
+  margin: 0;
+}
+
+/* Responsive layout */
+@media (max-width: 650px) {
+  .site-footer {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: 24px 16px;
+  }
+
+  .footer-brand,
+  .footer-links,
+  .footer-copyright {
+    justify-self: center;
+    text-align: center;
+  }
+
+  .footer-links {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+}
+
 
 
 /* Privacy Policy and Terms of Service */

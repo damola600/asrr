@@ -174,14 +174,7 @@ export default function HomePage() {
         </Link>
       </section>
 
-      <footer className={styles.footer}>
-        <span>☾ ASRR</span>
-        <div>
-          <Link href="/privacy">Privacy Policy</Link>
-          <Link href="/terms">Terms of Service</Link>
-        </div>
-        <p>© {new Date().getFullYear()} ASRR.</p>
-      </footer>
+      
     </main>
   );
 }
