@@ -674,13 +674,8 @@ def delete_google_prayer_event(
     prayer_event.delete()
     
     
-def sync_deleted_prayer_events(
-    user,
-    batch_size=20
-):
-    service = get_google_calendar_service(
-        user
-    )
+def sync_deleted_prayer_events(user, batch_size=20):
+    service = get_google_calendar_service(user)
     
     total = 0
     
@@ -690,7 +685,7 @@ def sync_deleted_prayer_events(
             PrayerGoogleEvent.objects.filter(
                 user=user,
                 pending_google_delete=True
-            )[:batch_size]
+            ).order_by('pk')[:batch_size]
         )
         
         if not prayer_events:

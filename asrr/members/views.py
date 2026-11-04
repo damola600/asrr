@@ -99,7 +99,8 @@ def login_user(request):
             "google_calendar_connected": google_connected,
         }, status=status.HTTP_200_OK
     )
-    
+
+@csrf_protect    
 @api_view(["POST"])
 # @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
