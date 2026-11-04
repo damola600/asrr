@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "ASRR Islamic Calendar",
-  description: "Your personal Islamic prayer and Sunnah calendar",
+  description: "Your personal Islamic calendar for prayer, remembrance and Sunnah.",
   verification:{
     google: process.env.GOOGLE_SITE_VERIFICATION,
   }
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
         <footer className="site-footer">
           <div>
-            <p>© 2026 ASRR. All rights reserved.</p>
+            <p>© {new Date().getFullYear()}. All rights reserved.</p>
           </div>
           <nav aria-label="Legal">
             <Link href="/privacy">Privacy Policy</Link>
