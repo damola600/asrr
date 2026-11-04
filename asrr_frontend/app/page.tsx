@@ -61,7 +61,7 @@ export default function HomePage() {
           <p>
             ASRR helps you organize your daily prayers,
             Sunnah practices, fasting days, and important
-            Islamic dates in one place — with optional
+            Islamic dates in one place with
             Google Calendar synchronization.
           </p>
 
