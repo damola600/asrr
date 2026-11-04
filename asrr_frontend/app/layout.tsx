@@ -27,16 +27,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
-      <footer className="site-footer">
-        <div>
-          <p>© 2026 ASRR. All rights reserved.</p>
-        </div>
-        <nav aria-label="Legal">
-          <Link href="/privacy">Privacy Policy</Link>
-          <Link href="/terms">Terms of Service</Link>
-        </nav>
-      </footer>
+      <body className="min-h-full flex flex-col">
+        {children}
+
+        <footer className="site-footer">
+          <div>
+            <p>© 2026 ASRR. All rights reserved.</p>
+          </div>
+          <nav aria-label="Legal">
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/terms">Terms of Service</Link>
+          </nav>
+        </footer>
+      </body>
+      
     </html>
+    
   );
 }

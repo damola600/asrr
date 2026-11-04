@@ -1,145 +1,187 @@
-'use client';
 
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-import { login } from "./auth/login";
-import { register } from "./auth/register";
-import './page.module.css';
+import Link from "next/link";
+import styles from "./page.module.css";
 
-export default function Landing(){
-  const router = useRouter();
+const features = [
+  {
+    icon: "☾",
+    title: "Daily Prayer Times",
+    description:
+      "Keep track of Fajr, Dhuhr, Asr, Maghrib, and Isha with prayer times based on your selected location and calculation preferences.",
+  },
+  {
+    icon: "✦",
+    title: "Sunnah Reminders",
+    description:
+      "Organize reminders for voluntary fasting, remembrance, and other Sunnah practices.",
+  },
+  {
+    icon: "◷",
+    title: "Islamic Calendar",
+    description:
+      "See important Islamic dates, holidays, and fasting days alongside your everyday schedule.",
+  },
+  {
+    icon: "▦",
+    title: "Google Calendar Sync",
+    description:
+      "Connect Google Calendar to create, update, and remove ASRR-managed events based on your preferences.",
+  },
+];
 
-  // States 
-  const [mode, setMode] = useState<'login' | 'signup'>('login');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-
-  const [signupEmail, setSignupEmail] = useState("");
-  const [signupPassword, setSignupPassword] = useState("");
-
-  // Login Function
-  async function handleLogin(event: FormEvent<HTMLFormElement>){
-    event.preventDefault();
-    setError("");
-    setLoading(true);
-
-    try{
-      const data = await login(loginEmail, loginPassword);
-
-      
-
-      if (data.setup_complete && data.google_calendar_connected){
-        router.push('/dashboard');
-      }else {
-        router.push('/setup');
-      }
-    }catch(error){
-      if (error instanceof Error){
-        setError(error.message);
-      }else{
-        setError('Unable to sign in');
-      }
-    }finally{
-      setLoading(false);
-      setLoginEmail("");
-      setLoginPassword("");
-    }
-  };
-
-  async function handleRegister(event: FormEvent<HTMLFormElement>){
-    event.preventDefault();
-
-    setError("");
-    setLoading(true);
-
-    try{
-      await register(signupEmail, signupPassword);
-
-      // setSignupEmail("");
-      // setSignupPassword("");
-
-      router.push('/setup');
-    }catch(error){
-      if (error instanceof Error){
-        setError(error.message);
-      }else {
-        setError('Unable to create account');
-      }
-    }finally{
-      setLoading(false);
-      setSignupEmail("");
-      setSignupPassword("");
-    }
-  };
-
+export default function HomePage() {
   return (
-    <main className="auth-page">
-      <div className="background-overlay" />
+    <main className={styles.page}>
+      <header className={styles.header}>
+        <Link href="/" className={styles.logo}>
+          <span className={styles.logoIcon}>☾</span>
+          ASRR
+        </Link>
 
-      <section className="auth-card">
-        <header className="brand-header">
-          <div className="moon-icon">☾</div>
-          <h1 className="brand-name">~ ASRR ~</h1>
-          <p className="brand-description">Your personal islamic calendar for prayer, remembrance and sunnah</p>
-        </header>
+        <nav className={styles.navigation}>
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How It Works</a>
+          <Link href="/login" className={styles.loginButton}>
+            Log In
+          </Link>
+        </nav>
+      </header>
 
-       {/* <div className="auth-tabs">
-          <button 
-          type="button" 
-          className={mode === 'login' ? 'auth-tab active':'auth-tab'} 
-          onClick={()=>{setMode('login'); setError("");}}>Sign In</button>
-          <button
-          type="button" 
-          className={mode === 'login' ? 'auth-tab active':'auth-tab'} 
-          onClick={()=>{setMode('login'); setError("");}}>Create Account</button>
-        </div> */}
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <span className={styles.eyebrow}>
+            YOUR PERSONAL ISLAMIC CALENDAR
+          </span>
 
-        {error && (
-          <div className="error-message">{error}</div>
-        )}
+          <h1>
+            Make time for
+            <span> what matters.</span>
+          </h1>
 
-        {mode === 'login' ? (
-          <form className="auth-form" onSubmit={handleLogin}>
-            <div className="field-group">
-              <label htmlFor="loginEmail">Email</label>
-              <input id="loginEmail" type="email" value={loginEmail} onChange={(event)=>setLoginEmail(event.target.value)}
-              placeholder="johndoe@example.com" autoComplete="email" required />
-            </div>
-            <div className="field-group">
-              <label htmlFor="loginPassword">Password</label>
-              <input id="loginPassword" type="password" value={loginPassword} onChange={(event)=>setLoginPassword(event.target.value)}
-              placeholder="password" autoComplete="current-password" required />
-            </div>
+          <p>
+            ASRR helps you organize your daily prayers,
+            Sunnah practices, fasting days, and important
+            Islamic dates in one place — with optional
+            Google Calendar synchronization.
+          </p>
 
-            <button className="primary-button" type="submit" disabled={loading}>{loading ? "Signing in..." : "Sign In"}</button>
-            <p className="auth-switch">Don&apos;t have an account?{" "}
-            <button type="button" onClick={()=>{setMode("signup"); setError("");}}>Sign up</button></p>
-          </form>
-        ): (
-          <form className="auth-form" onSubmit={handleRegister}>
-            <div className="field-group">
-              <label htmlFor="signupEmail">Email</label>
-              <input id="signupEmail" type="email" value={signupEmail} onChange={(event)=>setSignupEmail(event.target.value)}
-              placeholder="johndoe@example.com" autoComplete="email" required />
-            </div>
-            <div className="field-group">
-              <label htmlFor="signupPassword">Password</label>
-              <input id="signupPassword" type="password" value={signupPassword} onChange={(event)=>setSignupPassword(event.target.value)}
-              placeholder="At least 8 characters" autoComplete="new-password" required />
-            </div>
-            <button className="primary-button" type="submit" disabled={loading}>{loading ? "Creating account..." : "Create Account"}</button>
-            <p className="auth-switch">
-              Already have an account?{" "}
-              <button type="button" onClick={()=>{setMode("login"); setError("");}}>Sign in</button>
-            </p>
-          </form>
-        )}
+          <div className={styles.heroActions}>
+            <Link href="/login" className={styles.primaryButton}>
+              Get Started
+            </Link>
+
+            <a href="#how-it-works" className={styles.secondaryButton}>
+              Learn More
+            </a>
+          </div>
+
+          <p className={styles.heroNote}>
+            Your schedule. Your preferences. Your journey.
+          </p>
+        </div>
+
+        <div className={styles.heroVisual}>
+          <div className={styles.moon}>☾</div>
+          <div className={styles.visualLabel}>
+            Prayer · Remembrance · Sunnah
+          </div>
+        </div>
       </section>
+
+      <section id="features" className={styles.section}>
+        <div className={styles.sectionHeading}>
+          <span className={styles.eyebrow}>WHAT ASRR OFFERS</span>
+          <h2>Faith, thoughtfully organized.</h2>
+          <p>
+            Simple tools to help you plan your Islamic
+            practices alongside your daily responsibilities.
+          </p>
+        </div>
+
+        <div className={styles.featureGrid}>
+          {features.map((feature) => (
+            <article className={styles.featureCard} key={feature.title}>
+              <div className={styles.featureIcon}>
+                {feature.icon}
+              </div>
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="how-it-works" className={styles.howSection}>
+        <div className={styles.sectionHeading}>
+          <span className={styles.eyebrow}>GETTING STARTED</span>
+          <h2>Three simple steps.</h2>
+        </div>
+
+        <div className={styles.steps}>
+          <div>
+            <span>01</span>
+            <h3>Create your account</h3>
+            <p>Sign up and configure your location and preferences.</p>
+          </div>
+
+          <div>
+            <span>02</span>
+            <h3>Choose your reminders</h3>
+            <p>Enable the prayer and Sunnah events you want to follow.</p>
+          </div>
+
+          <div>
+            <span>03</span>
+            <h3>Connect Google Calendar</h3>
+            <p>
+              Authorize ASRR to manage its calendar events
+              and keep your selected reminders synchronized.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.googleSection}>
+        <div className={styles.googleContent}>
+          <span className={styles.eyebrow}>
+            GOOGLE CALENDAR INTEGRATION
+          </span>
+          <h2>Why does ASRR request Google Calendar access?</h2>
+          <p>
+            ASRR requests Google Calendar permission to
+            create Islamic prayer reminders, Sunnah events,
+            and Islamic calendar dates in your calendar.
+            It also uses this permission to update or
+            delete events it manages when your preferences
+            or prayer times change.
+          </p>
+          <p>
+            You choose which reminders to enable, and
+            Google Calendar access is requested when you
+            connect your account.
+          </p>
+          <Link href="/privacy" className={styles.textLink}>
+            Read our Privacy Policy
+          </Link>
+        </div>
+      </section>
+
+      <section className={styles.cta}>
+        <h2>Bring intention to your everyday schedule.</h2>
+        <p>Start organizing your Islamic calendar with ASRR.</p>
+        <Link href="/login" className={styles.primaryButton}>
+          Get Started
+        </Link>
+      </section>
+
+      <footer className={styles.footer}>
+        <span>☾ ASRR</span>
+        <div>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
+        </div>
+        <p>© {new Date().getFullYear()} ASRR.</p>
+      </footer>
     </main>
-  )
-
-
+  );
 }
