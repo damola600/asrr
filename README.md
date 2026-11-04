@@ -1,137 +1,141 @@
 # ☾ ASRR — Islamic Calendar & Prayer Scheduling Platform
 
-**ASRR** is a full-stack web application that integrates Islamic prayer times, Sunnah practices, and important Islamic dates directly into Google Calendar.
+**ASRR** is a full-stack SaaS web application that helps Muslims integrate daily prayers, Sunnah practices, voluntary fasting, and important Islamic dates into Google Calendar.
 
-The platform allows users to personalize their religious schedules, automate calendar event creation, and keep reminders synchronized as their preferences or prayer times change.
+Built to make Islamic scheduling more accessible, ASRR automates personalized calendar reminders while giving users control over their religious schedules.
 
-**Live Application:** [ASRR](https://asrr-seven.vercel.app/)
+🌐 **[Visit ASRR](https://asrr-seven.vercel.app/)**
 
-## Overview
+## About ASRR
 
-ASRR was developed to solve a practical scheduling challenge: integrating daily Islamic practices into the digital calendars people already use.
+Managing daily prayers, fasting schedules, and Islamic events alongside work, school, and personal responsibilities can be challenging.
 
-Rather than requiring users to manually create recurring prayer reminders, fasting schedules, and Islamic events, ASRR generates personalized calendar entries and manages their synchronization with Google Calendar.
+ASRR addresses this by connecting Islamic scheduling with Google Calendar, allowing users to manage their religious commitments within the calendar they already use.
 
-The application combines a Next.js frontend, Django REST API, PostgreSQL database, and asynchronous background processing with Celery and Redis.
+Users can create an account, configure their location and preferences, connect Google Calendar, and automatically synchronize their selected events.
+
+The platform is designed for real-world use, with a focus on automation, personalization, reliability, and scalability.
 
 ## Key Features
 
-**Google Calendar Integration**
-- Implemented OAuth 2.0 authentication for connecting Google accounts.
-- Integrated the Google Calendar API to create, update, and delete calendar events.
-- Developed synchronization logic to detect scheduling changes and manage previously created events.
-- Maintains Google event identifiers and synchronization states in PostgreSQL.
+### 🕌 Personalized Prayer Scheduling
+- Automatically generates calendar events for Fajr, Dhuhr, Asr, Maghrib, and Isha.
+- Supports location-based prayer times and Madhab preferences.
+- Updates prayer schedules when relevant settings change.
+- Allows users to enable or disable prayer synchronization.
 
-**Automated Prayer Scheduling**
-- Generates calendar events for the five daily Islamic prayers.
-- Retrieves prayer times based on user location and selected Madhab.
-- Updates scheduled events when prayer times or location preferences change.
-- Supports enabling or disabling daily prayer synchronization.
+### 🌙 Sunnah & Islamic Reminders
+- Monday and Thursday voluntary fasting
+- White Days, Arafah, Ashura, and other fasting occasions
+- Tahajjud and Duha prayers
+- Morning and evening Adhkar
+- Surah Al-Kahf and Al-Mulk reminders
+- Important Islamic dates and occasions
 
-**Customizable Sunnah Reminders**
-- Supports voluntary fasting schedules, including Mondays, Thursdays, White Days, Arafah, and Ashura.
-- Provides reminders for Tahajjud, Duha, Adhkar, and other Sunnah practices.
-- Allows users to enable or disable individual reminders.
-- Automatically updates synchronized events when preferences change.
+Users can customize which reminders appear in their calendars.
 
-**Hijri Calendar Management**
-- Maps Hijri calendar dates to Gregorian dates.
-- Generates recurring events based on Islamic dates, weekdays, and monthly schedules.
-- Supports significant Islamic occasions, including Ramadan and Eid.
-- Includes backend management commands for calendar initialization and annual refreshes.
+### 📅 Google Calendar Integration
+- Secure Google OAuth 2.0 authorization
+- Automated event creation and updates
+- Preference-based event deletion
+- Synchronization tracking to manage existing events
+- Background synchronization processing
 
-**User Authentication and Background Processing**
-- Built user registration, login, and profile management with Django.
-- Developed REST API endpoints for managing user preferences.
-- Integrated Celery and Redis for asynchronous calendar synchronization.
-- Used PostgreSQL to store user settings, prayer data, calendar events, and synchronization records.
+### 🔄 Automated Islamic Calendar Management
+- Hijri-to-Gregorian calendar mapping
+- Recurring Islamic event generation
+- Calendar initialization and refresh workflows
+- Support for changing prayer times and personalized schedules
 
 ## Technology Stack
 
-| Category | Technologies |
+| Component | Technology |
 |---|---|
-| Frontend | Next.js, React, TypeScript, CSS |
-| Backend | Python, Django, Django REST Framework |
+| Frontend | Next.js, React, TypeScript |
+| Backend | Python, Django REST Framework |
 | Database | PostgreSQL |
-| Background Processing | Celery, Redis |
-| API Integration | Google Calendar API, Google OAuth 2.0 |
+| Background Jobs | Celery, Redis |
+| Authentication | Django Authentication, Google OAuth 2.0 |
+| Integrations | Google Calendar API |
 | Deployment | Vercel, Render |
-| Development Tools | Git, GitHub |
 
 ## System Architecture
 
 ```text
-                   Next.js Frontend
-                          |
+                  ASRR Web Application
+                           |
+                    Next.js Frontend
+                           |
                     Django REST API
-                          |
-            +-------------+-------------+
-            |             |             |
-       PostgreSQL      Celery         Google OAuth
-            |             |             |
-      User Profiles     Redis       Google Calendar API
-      Prayer Times        |
-      Hijri Calendar   Background
-      Event Records    Sync Tasks
+                           |
+           +---------------+---------------+
+           |               |               |
+       PostgreSQL      Celery/Redis     Google OAuth
+           |               |               |
+     User Profiles     Async Tasks     Google Calendar
+     Prayer Times           |               API
+     Hijri Calendar    Calendar Sync
+     Event Records
 ```
 
-The frontend communicates with Django REST Framework endpoints to manage authentication, user settings, and calendar preferences.
+ASRR uses a decoupled frontend and backend architecture. Django REST Framework manages application logic and user preferences, PostgreSQL provides persistent storage, and Celery handles asynchronous synchronization with Google Calendar.
 
-PostgreSQL stores application data, while Celery processes synchronization tasks asynchronously. The Google Calendar API handles event creation, modification, and deletion.
+## Engineering & Technical Highlights
 
-## Engineering Highlights
+**Full-Stack Application Development**
 
-### 1. Google Calendar Synchronization
+Designed and developed a complete web application using Next.js, TypeScript, Django, and PostgreSQL, including authentication, account configuration, REST APIs, and personalized dashboards.
 
-Designed a synchronization workflow that manages the relationship between internal database records and external Google Calendar events.
+**External API Integration**
 
-Each synchronized event maintains a Google Calendar event ID and synchronization state, allowing the backend to determine whether an event should be created, updated, or deleted.
+Integrated Google OAuth 2.0 and the Google Calendar API to support user-authorized calendar operations and automated event management.
 
-This reduces unnecessary event creation and supports changes to user preferences without requiring users to rebuild their calendars manually.
+**Asynchronous Processing**
 
-### 2. Asynchronous Task Processing
+Implemented Celery and Redis to execute calendar synchronization tasks outside HTTP request handling, improving responsiveness during API-intensive operations.
 
-Implemented background task processing with Celery and Redis to separate calendar synchronization from HTTP request handling.
+**Calendar Synchronization Engine**
 
-When users update their preferences, the backend can queue synchronization tasks instead of performing all Google Calendar operations during the API request.
+Developed backend logic to track synchronized events, identify scheduling changes, update existing Google Calendar entries, and remove events when users disable specific preferences.
 
-### 3. Personalized Event Generation
+**Recurring Event Generation**
 
-Developed backend services that generate user-specific schedules using location, prayer-time data, Hijri dates, and individual Sunnah preferences.
+Built scheduling services that combine Hijri calendar rules, Gregorian dates, prayer-time data, and individual user preferences to generate personalized recurring events.
 
-The scheduling system supports multiple recurrence patterns, including daily, weekly, and Hijri-calendar-based events.
+## Product Development
 
-### 4. External API Integration
+ASRR is being developed as a user-facing SaaS platform rather than a demonstration-only application.
 
-Integrated Google OAuth 2.0 and the Google Calendar API, including token management and API error handling.
+Development priorities include:
 
-Implemented synchronization states and deletion workflows to manage events across both the application database and Google Calendar.
+- Reliable and scalable calendar synchronization
+- User-controlled prayer and Sunnah scheduling
+- Secure account and Google Calendar integration
+- Automated calendar maintenance
+- Responsive and accessible user interfaces
+- Monitoring and recovery from synchronization failures
 
-## Challenges and Technical Decisions
+## Application
 
-- **Calendar consistency:** Tracking external Google event IDs to update existing entries instead of blindly creating new events.
-- **Dynamic schedules:** Supporting prayer times that change throughout the year and vary by location.
-- **Recurring Islamic dates:** Translating Hijri-based recurrence rules into Gregorian calendar events.
-- **Background execution:** Using Celery to process potentially large numbers of calendar operations asynchronously.
-- **User-controlled synchronization:** Designing event creation and deletion around individual user preferences.
+**Website:** https://asrr-seven.vercel.app/
 
-## Deployment
+Users can create an account, configure their preferences, and connect Google Calendar to begin using ASRR.
 
-ASRR uses a separated frontend and backend deployment architecture.
-
-- **Frontend:** Vercel
-- **Backend API:** Render
-- **Database:** PostgreSQL
-- **Background processing:** Celery and Redis
-
-**Application:** https://asrr-seven.vercel.app/
+*Google Calendar integration may be subject to Google's OAuth verification requirements during rollout.*
 
 ## Project Status
 
-ASRR is an actively developed personal software engineering project.
+**Active Development — Preparing for Broader Public Use**
 
-Current development focuses on improving calendar synchronization reliability, automating annual calendar updates, and refining the user experience.
+ASRR is independently designed and developed, with ongoing improvements to functionality, reliability, and the user experience.
+
+## Ownership
+
+ASRR is a proprietary software project. The source code and associated intellectual property are not offered under an open-source license.
+
+**© 2026 ASRR. All rights reserved.**
 
 ---
 
-**ASRR — Make time for what matters.**
+### ☾ ASRR
+*Make time for what matters.*
