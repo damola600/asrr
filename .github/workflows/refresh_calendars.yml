@@ -1,0 +1,35 @@
+name: Annual ASRR Calendar Refresh
+
+on:
+  schedule:
+    - cron: "0 3 1 1 *"
+
+  workflow_dispatch:
+
+jobs:
+  refresh-calendar:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./asrr
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: asrr/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Refresh Islamic calendars
+        env:
+          DATABASE_URL: ${{ secrets.DB_URL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: python manage.py refresh_calendars
