@@ -166,8 +166,8 @@ export default function HomePage() {
       </section>
 
       <section className={styles.cta}>
-        <h2>Bring intention to your everyday schedule.</h2>
-        <p>Start organizing your Islamic calendar with ASRR.</p>
+        <h2>Plan your schedule around Allah.</h2>
+        <p>Start an Allah centered schedule with ASRR.</p>
         <Link href="/login" className={styles.primaryButton}>
           Get Started
         </Link>

@@ -812,9 +812,33 @@ export default function SetupPage() {
 
             <div className="field-group">
 
-              <label htmlFor="madhab">
-                Madhab
-              </label>
+              
+              <div className="label-with-info">
+                <label htmlFor="madhab">Madhab</label>
+
+                <span className="tooltip-container">
+                  <button
+                    type="button"
+                    className="info-button"
+                    aria-label="What is a Madhab?"
+                    aria-describedby="madhab-tooltip"
+                  >
+                    ⓘ
+                  </button>
+
+                  <span
+                    id="madhab-tooltip"
+                    role="tooltip"
+                    className="tooltip-text"
+                  >
+                    A Madhab is a school of Islamic jurisprudence.
+                    Your selection helps ASRR calculate prayer times,
+                    especially Asr. Hanafi generally follows a later
+                    Asr calculation than other Sunni schools.
+                  </span>
+                </span>
+              </div>
+
 
 
               <select
